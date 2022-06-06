@@ -2,6 +2,8 @@
 
 import java.util.function.DoubleSupplier;
 
+import frc.robot.utils.*;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -36,11 +38,20 @@ public class DefaultDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-      // test
-//      schedule();
+
+
+
+
+
+      //deadband testing
+      
+      utils.applydeadband(m_translationXSupplier.getAsDouble(), Constants.CONTROL_DEADBAND);
+      utils.applydeadband(m_translationYSupplier.getAsDouble(), Constants.CONTROL_DEADBAND);
+      
+
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
-        System.out.println(m_translationXSupplier.getAsDouble());
-        
+
+
         m_drivetrainSubsystem.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                   modifyAxis(m_translationXSupplier.getAsDouble()*DriveBase.MAX_VELOCITY_METERS_PER_SECOND),
@@ -49,6 +60,9 @@ public class DefaultDriveCommand extends CommandBase {
                         m_drivetrainSubsystem.getGyroscopeRotation()
                 )
         );
+        
+
+        
 //        SmartDashboard.putNumber("XJoystick", m_translationXSupplier);
     }
 
@@ -61,32 +75,35 @@ public class DefaultDriveCommand extends CommandBase {
     public boolean isFinished(){
         return false;
     }
-    private double deadband(double value, double deadband) {
-        if (Math.abs(value) > deadband) {
+  /*  private double deadband(double value, double CONTROL_DEADBAND) {
+        if (Math.abs(value) > CONTROL_DEADBAND) {
           if (value > 0.0) {
             System.out.println("Value > 0");
-            return (value - deadband) / (1.0 - deadband);
+            return (value - CONTROL_DEADBAND) / (1.0 - CONTROL_DEADBAND);
+            
           } else {
             System.out.println("Value <=0");
-            return (value + deadband) / (1.0 - deadband);
+            return (value + CONTROL_DEADBAND) / (1.0 - CONTROL_DEADBAND);
           }
         } else {
           System.out.println("Abs Value < deadband");
           return 0.0;
         } 
-      }
+      } */
     
       private double modifyAxis(double value) {
-        System.out.println(value);
+        //System.out.println(value);
         // Deadband
-        value = deadband(value, 0.05);
+       // value = deadband(value, 0.05);
     
         // Square the axis
         value = Math.copySign(value * value, value);
-       System.out.println(value);
+        System.out.println(value);
+        // Commented out for less terminal spam
+      /* System.out.println(value);
        System.out.println("*************************************");
        System.out.println("Offset FL");
-       System.out.println(Constants.FRONT_LEFT_MODULE_STEER_OFFSET);
+       System.out.println(Constants.FRONT_LEFT_MODULE_STEER_OFFSET); */
         return value; 
       }
 } 

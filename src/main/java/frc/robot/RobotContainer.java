@@ -10,6 +10,7 @@ import javax.management.relation.RelationSupportMBean;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.Drive;
@@ -52,8 +53,6 @@ m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(m_drivetrainSubs
 ()->m_controller.getLeftX(),
 ()->m_controller.getLeftY(),
 ()->m_controller.getRightX()));
-/*
- */
  /*
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(m_drivetrainSubsystem, 
     0.8,
@@ -87,7 +86,7 @@ m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(m_drivetrainSubs
     return new Drive();
   }
   
-  private static double deadband(double value, double deadband) {
+ /* private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
       if (value > 0.0) {
         System.out.println("Value > 0");
@@ -100,18 +99,20 @@ m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(m_drivetrainSubs
       System.out.println("Abs Value < deadband");
       return 0.0;
     }
-  }
+  } */
   
-  private static double modifyAxis(double value) {
-    System.out.println(value);
+ // private static double modifyAxis(double value) {
+    // System.out.println(value);
     // Deadband
-    value = deadband(value, 0.05);
+   // value = deadband(value, 0.05);
+
+    
 
     // Square the axis
-    value = Math.copySign(value * value, value);
-   System.out.println(value);
-   System.out.println("*************************************");
+   // value = Math.copySign(value * value, value);
+  // System.out.println(value);
+  // System.out.println("*************************************");
 
-    return value;
+   // return value;
   }
-}
+
