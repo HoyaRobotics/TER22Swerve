@@ -14,10 +14,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.Drive;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveBase;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -38,27 +38,21 @@ public class RobotContainer {
     // Left stick Y axis -> forward and backwards movement
     // Left stick X axis -> left and right movement
     // Right stick X axis -> rotation
-  /*  m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+    m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(m_controller.getY(GenericHID.Hand.kLeft)) * DriveBase.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getX(GenericHID.Hand.kLeft)) * DriveBase.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getX(GenericHID.Hand.kRight)) * DriveBase.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    ));*/
+            () -> -modifyAxis(m_controller.getLeftY()) * DriveBase.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_controller.getLeftX()) * DriveBase.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_controller.getRightX()) * DriveBase.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+    ));
 
 //**********************************tROUBLESHOOTING */
 //System.out.println("&&&&&&&&&&&&&&&&&&&&&&&McT troubleshooting");
 //System.out.println(DriveBase.MAX_VELOCITY_METERS_PER_SECOND);
 
-m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(m_drivetrainSubsystem, 
+/*m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(m_drivetrainSubsystem, 
 ()->m_controller.getLeftX(),
 ()->m_controller.getLeftY(),
-()->m_controller.getRightX()));
- /*
-    m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(m_drivetrainSubsystem, 
-    0.8,
-    modifyAxis(m_controller.getLeftX())*DriveBase.MAX_VELOCITY_METERS_PER_SECOND,
-    modifyAxis(m_controller.getRightX())*DriveBase.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
-*/
+()->m_controller.getRightX()));*/
     
     // Configure the button bindings
     configureButtonBindings();
@@ -72,7 +66,9 @@ m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(m_drivetrainSubs
    */
   private void configureButtonBindings() {
 
+  //  new Button(m_controller::getXButton)
 
+    //      .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
   }
 
@@ -86,33 +82,27 @@ m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(m_drivetrainSubs
     return new Drive();
   }
   
- /* private static double deadband(double value, double deadband) {
+  private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
       if (value > 0.0) {
-        System.out.println("Value > 0");
         return (value - deadband) / (1.0 - deadband);
       } else {
-        System.out.println("Value <=0");
         return (value + deadband) / (1.0 - deadband);
       }
     } else {
-      System.out.println("Abs Value < deadband");
       return 0.0;
     }
-  } */
-  
- // private static double modifyAxis(double value) {
-    // System.out.println(value);
-    // Deadband
-   // value = deadband(value, 0.05);
+  }
 
-    
+  
+  private static double modifyAxis(double value) {
+    // Deadband
+    value = deadband(value, 0.1);
 
     // Square the axis
-   // value = Math.copySign(value * value, value);
-  // System.out.println(value);
-  // System.out.println("*************************************");
+    value = Math.copySign(value * value, value);
 
-   // return value;
+    return value;
   }
+}
 
